@@ -1,0 +1,41 @@
+{
+  "name": "runnup-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "test": "mocha --timeout 5000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tower-dev/runnup-server"
+  },
+  "author": "Richard Antao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tower-dev/runnup-server/issues"
+  },
+  "homepage": "https://github.com/tower-dev/runnup-server#readme",
+  "dependencies": {
+    "@google-cloud/logging-winston": "^3.0.6",
+    "@sendgrid/mail": "^7.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.1",
+    "helmet": "^3.22.0",
+    "mongodb": "^3.5.7",
+    "mongoose": "^5.9.13",
+    "winston": "^3.2.1",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "concurrently": "^5.2.0",
+    "mocha": "^7.1.2",
+    "nodemon": "^2.0.3"
+  }
+}
