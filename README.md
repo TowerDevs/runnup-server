@@ -27,7 +27,7 @@ We use [Semver](https://semver.org) for versioning. For the versions available, 
 
 ## Authors
 * Richard Antao
-* Richard Antao
+* Jason Chin
 * Joshua D'Silva
 * Michael D'Silva
 
