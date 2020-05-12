@@ -1,4 +1,4 @@
-const Post = require("../models/Posts");
+const Post = require("../models/posts");
 
 exports.create = (req, res) => {
     const { title, category, body } = req.body;
