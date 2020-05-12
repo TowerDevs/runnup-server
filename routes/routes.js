@@ -16,5 +16,5 @@ router.get('/routes/:_id', auth, controller.route_details);
 router.put('/routes/:_id', auth, controller.route_update);
 
 // Delete Route
-router.delete('/routes/:_id', auth, controller.route_delete)
+router.delete('/routes/:_id', auth, controller.route_delete);
 
