@@ -1,11 +1,10 @@
 const { model, Schema } = require("mongoose");
 
 module.exports = model("routes", new Schema({
-    userID: { type: Schema.Types.ObjectId, required: true, ref: "users" },
-    routeName: { type: String, required: true },
-    length: { type: Number, required: true },
-    duration: { type: Number, required: true }
-}, {
-    timestamps: true,
-    versionKey: true
+    user: { type: Schema.Types.ObjectId, required: true, ref: "users" },
+    name: { type: String, required: true },
+    distance: { type: Number, required: true },
+    duration: { type: Number, required: false },
+    pace: { type: Number, required: false },
+    calories: {type: Number, required: false }
 }));
