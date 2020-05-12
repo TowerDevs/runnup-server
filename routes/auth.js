@@ -1,20 +1,16 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const jwt = require('jsonwebtoken')
-const router = express.router()
-
-const register_validation = require("../middleware/validation/auth_create");
-const login_validation = require("../middleware/validation/auth_login");
-
-const auth_controller = require('../controllers/auth')
-
-const User = require('../models/users')
+const router = require('express').Router();
+const auth = require("../middleware/token");
+const validation = require("../middleware/validation/auth");
+const controller = require("../controllers/auth");
 
 // Create User
-router.post('/api/v1/users', register_validation, auth_controller.user_create);
-// Login User
-router.post('/api/v1/users/access-token', login_validation, auth_controller.user_login);
+router.post('/api/v1/users', validation.create, controller.user_create);
+
 // User Creds
-router.get('/api/v1/users', auth_controller.user_details)
+router.get('/api/v1/users', auth, validation.login, controller.user_details);
+
+// Login User
+router.post('/api/v1/users/access-token', validation.login, controller.user_login);
+
 //Logout User
-router.delete('/api/v1/routes/access-token')
+router.delete('/api/v1/routes/access-token');
