@@ -18,15 +18,15 @@ exports.route_create = (req, res, next) => {
     })
 }
 
-exports.review_findByUserID = function(req,res,next) {
+exports.route_findByUserID = function(req,res,next) {
     Route.find({ userID : userID })
-    .exec(function(err, reviews){
+    .exec(function(err, routes){
         if(err){
             
             return res.status(500).send({
                 message: "Error retrieving routes with given User ID" + req.params.userID
             })
         }
-        res.send('Routes retrieves successfully');
+        res.send(routes);
     });
 };
