@@ -9,8 +9,8 @@ const xss = require("xss-clean");
 
 /* --- Configuration --- */
 const app = express();
-const port = process.env.PORT || 3001;
-const env = process.env.NODE_ENV || "development";
+const port = process.env.NODE_ENV || 3001;
+require("./config/db");
 
 /* --- Middleware --- */
 app.use(helmet());
@@ -20,9 +20,10 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 /* --- Routes --- */
-app.use("/api/contact", require("./routes/contact"));
-app.use("/api/errors", require("./routes/errors"));
-app.use("/api/posts", require("./routes/posts"));
+app.use("/api/v1", require("./routes/auth"));
+app.use("/api/v1", require("./routes/errors"));
+app.use("/api/v1", require("./routes/routes"));
+app.use("/api/v1", require("./routes/runs"));
 
 /* --- Bootup --- */
 app.listen(port, () => console.log(`Server running on port ${port}`));
