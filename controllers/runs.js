@@ -33,7 +33,10 @@ exports.run_findByUserID = function(req,res,next) {
 };
 
 exports.run_findByRouteID = function(req,res,next) {
-    Run.find({ routeID : routeID })
+    Run.find({ 
+        userID : userID,
+        routeID : routeID 
+    })
     .exec(function(err, runs){
         if(err){
             
@@ -43,4 +46,28 @@ exports.run_findByRouteID = function(req,res,next) {
         }
         res.send(runs);
     });
+};
+
+exports.run_update = function (req, res, next) {
+    Run.findByIdAndUpdate(req.params.id, {$set: req.body}, 
+    function (err, run) {
+        if (err) {
+            return next(err);
+        }
+        res.send(run);
+    });
+};
+
+exports.run_details = function (req, res, next) {
+    Run.findById(req.params.id, function (err, run) {
+        if (err) return next(err);
+        res.send(run);
+    })
+};
+
+exports.run_delete = function (req, res, next) {
+    Route.findByIdAndRemove(req.params.id, function (err) {
+        if (err) return next(err);
+        res.send('Deleted successfully!');
+    })
 };
