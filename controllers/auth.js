@@ -72,3 +72,7 @@ exports.user_update = function (req, res, next) {
         return res.status(200).json('User updated.');
     });
 };
+
+// exports.user_logout = function (req, res, next) {
+
+// }

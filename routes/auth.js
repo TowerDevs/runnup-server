@@ -12,5 +12,5 @@ router.get('/users', auth, validation.login, controller.user_details);
 // Login User
 router.post('/users/access-token', validation.login, controller.user_login);
 
-//Logout User
-// router.delete('/users/access-token', ); // add controller
+// //Logout User
+// router.delete('/users/access-token', controller.user_logout); // add controller
