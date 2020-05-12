@@ -55,20 +55,9 @@ exports.user_login = function (req, res, next) {
             else { 
                 (bcrypt.compare(userData.password, user.password, function (err, result) {
                     if (result) {
-                        if (user.role == null){
-                            res.status(401).send('Invalid role: ' + user.role)
-                        }
-                        else if (user.deactivated){
-                            res.statusMessage = 'Account inactive, please contact administrator'
-                            res.status(401).send('Account inactive, please contact administrator')
-                        }
-                        else {
-                            // learned how to send payload and token from this tutorial video: https://www.youtube.com/watch?v=ozXGkqpzo_A&list=PLC3y8-rFHvwg2RBz6UplKTGIXREj9dV0G&index=1
-                            let payload = {subject: user._id}
-                            let token = jwt.sign(payload, 'secretKey')
-                            let role = user.role
-                            res.status(200).send({token, role})
-                        }
+                        let payload = {subject: user._id}
+                        let token = jwt.sign(payload, 'secretKey')
+                        res.status(200).send({token})     
                         return true
                     } else {
                         res.statusMessage = 'Incorrect Password'
@@ -93,7 +82,7 @@ exports.user_all = function (req, res, next) {
 }
 
 exports.user_details = function (req, res, next) {
-    User.findById(req.params.id, function (err, user) {
+    User.findById(req.user.id, function (err, user) {
         if (err) return next(err);
         res.send(user);
     })
@@ -108,3 +97,5 @@ exports.user_update = function (req, res, next) {
         res.send('User updated.');
     });
 };
+
+module.exports = router
