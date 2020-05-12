@@ -1,7 +1,7 @@
 const { model, Schema } = require("mongoose");
 
 module.exports = model("runs", new Schema({
-    userID: { type: String, required: true },
+    userID: { type: Schema.Types.ObjectId, required: true, ref: "users" },
     day: { type: Date, required: true },
     routeID: {type: String, required: true},
     avgPace: { type: Number, required: true },
