@@ -10,21 +10,23 @@ exports.user_create = (req, res, next) => {
 
         else if (user) res.status(403).json("User already exists")
 
-        const user = new User({
+        else {
+            const user = new User({
                 name: name,
                 email: email,
                 password: bcrypt.hashSync(password, 10),
                 region: region
-        });
+            });
 
-        user.save((err, registeredUser) => {
-            if (err) return next(err);
+            user.save((err, registeredUser) => {
+                if (err) return next(err);
 
-            const payload = { subject: registeredUser._id}
-            const token = jwt.sign(payload, 'secretKey')
+                const payload = { subject: registeredUser._id}
+                const token = jwt.sign(payload, 'secretKey')
 
-            return res.status(201).json(token)
-        })
+                return res.status(201).json(token)
+            })
+        }
     })
 }
 
