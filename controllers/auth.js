@@ -19,7 +19,7 @@ exports.user_create = function (req, res, next) {
                     email: req.body.email,
                     password: bcrypt.hashSync(req.body.password, 10),
                     region: req.body.region,
-                    spotifyID: req.body.spotifyID,
+                    spotifyID: null,
                     friends: null,
                 }
             );
