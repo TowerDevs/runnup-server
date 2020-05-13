@@ -5,7 +5,7 @@ exports.verifyToken = (req, res, next) => {
     if(!req.headers.authorization){
         return res.status(401).send('Unauthorized request')
     }
-    let token = req.headers.authorization.split(' ')[1]
+    let token = req.headers.authorization.split(' ')[0]
     if (token === 'null'){
         return res.status(401).send('Unauthorized request')
     }
@@ -13,6 +13,6 @@ exports.verifyToken = (req, res, next) => {
     if(!payload) {
         return res.status(401).send('Unauthorized request')
     }
-    req.user.id = payload.subject
+    req.user = payload.subject
     next()
 }

@@ -58,7 +58,7 @@ exports.user_login = (req, res, next) => {
 }
 
 exports.user_details = (req, res, next) => {
-    const { id } = req.user.id;
+    const { id } = req.user;
 
     User.findById(id, (err, user) => {
         if (err) return next(err);
