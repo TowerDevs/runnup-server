@@ -1,4 +1,5 @@
 const secretKey = process.env.AUTH_SECRET;
+const jwt = require('jsonwebtoken')
 
 exports.verifyToken = (req, res, next) => {
     if(!req.headers.authorization){

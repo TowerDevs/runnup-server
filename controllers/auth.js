@@ -3,6 +3,9 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const secretKey = process.env.AUTH_SECRET;
 
+const Routes = require('../models/Routes')
+const Runs = require('../models/Runs')
+
 exports.user_create = (req, res, next) => {
     const { name, email, password, region } = req.body
 
@@ -55,7 +58,7 @@ exports.user_login = (req, res, next) => {
 }
 
 exports.user_details = (req, res, next) => {
-    const { id } = req.user;
+    const { id } = req.user.id;
 
     User.findById(id, (err, user) => {
         if (err) return next(err);
@@ -75,10 +78,13 @@ exports.user_update = (req, res, next) => {
 };
 
 exports.user_delete = (req, res, next) => {
-    const { id } = req.user;
+    const { _id } = req.user;
 
-    User.findByIdAndDelete(id, (err, user) => {
+    User.findByIdAndDelete(_id, (err, user) => {
         if (err) return next(err);
+
+        Routes.remove({user: _id }).exec()
+        Runs.remove({user: _id }).exec()
 
         return res.status(200).json('User deleted.');
     });
