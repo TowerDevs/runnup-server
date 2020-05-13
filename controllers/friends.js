@@ -8,26 +8,25 @@ exports.friend_add = (req, res, next) => {
 
     const { email } = req.body;
 
-    User.findOne({email}), (err, user) => {
-        if (err) console.log(err)
+    // User.findOne({email}), (err, user) => {
+    //     if (err) return console.log(err)
 
-        else if (!user) res.status(403).json("User does not exist")
+    //     else if (!user) return res.status(403).json("User does not exist")
 
-        else {
+    //     else {
             const friend = new Friend({
-                friend: user._id,
                 email: email,
                 status: "pending"
             })
-            User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err, user) => {
+            User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
                 if (err) return next(err);
         
                 console.log(req.body)
         
                 return res.status(200).json('Friend Added.');
             });
-        }
-    }
+    //     }
+    // }
     
 }
 
