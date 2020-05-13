@@ -1,5 +1,7 @@
 const { model, Schema } = require("mongoose");
 
+const friendSchema = require('../models/Friends').schema;
+
 var mate = new Schema({
     friend: { type: Schema.Types.ObjectId, ref: "users" },
     email: { type: String, required: true },
@@ -14,5 +16,5 @@ module.exports = model("users", new Schema({
     state: {type: String, required: false},
     spotify: {type: String, required: false},
     friendRequests: [{type: Schema.ObjectId, ref: 'users'}],
-    friends: [mate]
+    friends: [friendSchema]
 }));
