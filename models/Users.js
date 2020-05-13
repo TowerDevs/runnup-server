@@ -2,12 +2,6 @@ const { model, Schema } = require("mongoose");
 
 const friendSchema = require('../models/Friends').schema;
 
-var mate = new Schema({
-    friend: { type: Schema.Types.ObjectId, ref: "users" },
-    email: { type: String, required: true },
-    status: { type: String, required: true }
-})
-
 module.exports = model("users", new Schema({
     name: {type: String, required: true},
     email: {type: String, required: true, unique: true},
