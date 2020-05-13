@@ -13,6 +13,6 @@ module.exports = model("users", new Schema({
     country: {type: String, required: false},
     state: {type: String, required: false},
     spotify: {type: String, required: false},
-   // friends: [{type: Schema.ObjectId, ref: 'Friend'}],
-   friends: [mate]
+    friendRequests: [{type: Schema.ObjectId, ref: 'users'}],
+    friends: [mate]
 }));
