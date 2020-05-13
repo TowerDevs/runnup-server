@@ -19,7 +19,7 @@ router.post('/users/access-token', validation.login, controller.user_login);
 router.put('/users', auth.verifyToken, controller.user_update);
 
 // Delete User
-router.delete('/users', controller.user_delete);
+router.delete('/users', auth.verifyToken, controller.user_delete);
 
 module.exports = router;
 
