@@ -17,7 +17,7 @@ describe("POST /api/v1/users", () => {
         let user = {
             name: "Gerald Smith",
             password: "password",
-            email: "m84@michaeldsilva.com"
+            email: "m89@michaeldsilva.com"
         }
         chai.request(server)
         .post("/api/v1/users")
@@ -54,9 +54,36 @@ describe("POST /api/v1/users", () => {
 
             res.body.should.be.a("string");
 
-            res.body.should.equal("User already exists")
+            res.body.should.equal("User already exists");
 
             done();
+        });
+    });
+});
+
+// Update new user
+describe("UPDATE /api/v1/users", () => {
+    it("It should return a 200 status with a string saying the user has been updates", done => {
+        console.log("Auth:" + auth)
+        let userData = {
+            name: "Greg Smith",
+            Country: "France"
+        }
+        chai.request(server)
+        .put("/api/v1/users")
+        .set('Authorization', auth)
+        .send(userData)
+        .end((err, res) => {
+            if(err) throw err;
+
+            res.should.have.property("status", 200);
+
+            res.body.should.be.a("string");
+
+            res.body.should.equal("User updated.");
+
+            done();
+
         });
     });
 });
@@ -64,6 +91,7 @@ describe("POST /api/v1/users", () => {
 // Delete new user
 describe("DELETE /api/v1/users", () => {
     it("It should return a 200 status with a string saying the user has been deleted", done => {
+        console.log("Auth:" + auth)
         chai.request(server)
         .delete("/api/v1/users")
         .set('Authorization', auth)
@@ -73,6 +101,8 @@ describe("DELETE /api/v1/users", () => {
             res.should.have.property("status", 200);
 
             res.body.should.be.a("string");
+
+            res.body.should.equal("User deleted.");
 
             done();
 
