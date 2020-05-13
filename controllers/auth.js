@@ -1,6 +1,7 @@
 const User = require('../models/Users')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const secretKey = process.env.AUTH_SECRET;
 
 exports.user_create = (req, res, next) => {
     const { name, email, password, region } = req.body
@@ -22,7 +23,7 @@ exports.user_create = (req, res, next) => {
                 if (err) return next(err);
 
                 const payload = { subject: registeredUser._id}
-                const token = jwt.sign(payload, 'secretKey')
+                const token = jwt.sign(payload, secretKey)
 
                 return res.status(201).json(token)
             })
@@ -43,7 +44,7 @@ exports.user_login = (req, res, next) => {
 
             if (result) {
                 const payload = {subject: user._id}
-                const token = jwt.sign(payload, 'secretKey')
+                const token = jwt.sign(payload, secretKey)
 
                 return res.status(201).json(token);
             }
