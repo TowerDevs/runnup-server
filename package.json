@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "mocha --timeout 5000"
+    "test": "mocha 'tests/**/*.js' --timeout 5000 --recursive"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,6 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "concurrently": "^5.2.0",
-    "mocha": "^7.1.2",
     "nodemon": "^2.0.3"
   }
 }
