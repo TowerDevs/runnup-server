@@ -24,6 +24,7 @@ app.use("/api/v1", require("./routes/auth"));
 app.use("/api/v1", require("./routes/errors"));
 app.use("/api/v1", require("./routes/routes"));
 app.use("/api/v1", require("./routes/runs"));
+app.use("/api/v1", require("./routes/friends"));
 
 /* --- Bootup --- */
 app.listen(port, () => console.log(`Server running on port ${port}`));
