@@ -67,7 +67,7 @@ exports.user_details = (req, res, next) => {
 exports.user_update = (req, res, next) => {
     const { id } = req.user;
 
-    User.findByIdAndUpdate(id, {$set: req.body}, (err, user) => {
+    User.findByIdAndUpdate(id, (err, user) => {
         if (err) return next(err);
 
         return res.status(200).json('User updated.');
@@ -77,7 +77,7 @@ exports.user_update = (req, res, next) => {
 exports.user_delete = (req, res, next) => {
     const { id } = req.user;
 
-    User.findByIdAndDelete(id, {set: req.body}, (err, user) => {
+    User.findByIdAndDelete(id, (err, user) => {
         if (err) return next(err);
 
         return res.status(200).json('User deleted.');
