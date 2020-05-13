@@ -62,7 +62,7 @@ exports.user_login = (req, res, next) => {
 
 exports.user_details = (req, res, next) => {
 
-    User.findById({_id: new ObjectID(req.user)}, (err, user) => {
+    User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
         if (err) return next(err);
 
         return res.json(user);
@@ -71,7 +71,7 @@ exports.user_details = (req, res, next) => {
 
 exports.user_update = (req, res, next) => {
 
-    User.findOneAndUpdate(req.user, {$set: req.body}, (err, user) => {
+    User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$set: req.body}, (err, user) => {
         if (err) return next(err);
 
         console.log(req.body)
@@ -82,7 +82,7 @@ exports.user_update = (req, res, next) => {
 
 exports.user_delete = (req, res, next) => {
 
-    User.findOneAndDelete(req.user, (err, user) => {
+    User.findOneAndDelete({_id: new ObjectID(req.user)}, (err, user) => {
         if (err) return next(err);
 
         // Routes.remove({user: new ObjectID(req.user) }).exec()
