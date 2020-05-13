@@ -82,11 +82,11 @@ exports.user_update = (req, res, next) => {
 
 exports.user_delete = (req, res, next) => {
 
-    User.findOneAndDelete({_id: new ObjectID(req.user)}, (err, user) => {
+    User.deleteOne({_id: new ObjectID(req.user)}, (err, user) => {
         if (err) return next(err);
 
-        // Routes.remove({user: new ObjectID(req.user) }).exec()
-        // Runs.remove({user: new ObjectID(req.user) }).exec()
+        // Routes.deleteMany({user: new ObjectID(req.user) }).exec()
+        // Runs.deleteMany({user: new ObjectID(req.user) }).exec()
 
         return res.status(200).json('User deleted.');
     });
