@@ -72,3 +72,10 @@ exports.user_update = function (req, res, next) {
         return res.status(200).json('User updated.');
     });
 };
+
+exports.user_all = function (req, res, next) {
+    User.find(function(err, user){
+        if (err) return next(err);
+        res.json(user);
+    })
+}
