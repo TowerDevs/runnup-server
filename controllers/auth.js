@@ -82,7 +82,7 @@ exports.user_update = (req, res, next) => {
 
 exports.user_delete = (req, res, next) => {
 
-    User.findByIdAndDelete(new ObjectID(req.user), (err, user) => {
+    User.findOneAndDelete(req.user, (err, user) => {
         if (err) return next(err);
 
         // Routes.remove({user: new ObjectID(req.user) }).exec()
