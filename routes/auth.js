@@ -16,7 +16,7 @@ router.post('/users/access-token', validation.login, controller.user_login);
 // router.delete('/users/access-token', ); // add controller
 
 // Update User
-router.put('/users', controller.user_update);
+router.put('/users', auth.verifyToken, controller.user_update);
 
 // Delete User
 router.delete('/users', controller.user_delete);

@@ -6,6 +6,9 @@ const secretKey = process.env.AUTH_SECRET;
 const Routes = require('../models/Routes')
 const Runs = require('../models/Runs')
 
+const ObjectID = require('mongodb').ObjectID;
+
+
 exports.user_create = (req, res, next) => {
     const { name, email, password, region } = req.body
 
@@ -58,9 +61,8 @@ exports.user_login = (req, res, next) => {
 }
 
 exports.user_details = (req, res, next) => {
-    const { id } = req.user;
 
-    User.findById(id, (err, user) => {
+    User.findById({_id: new ObjectID(req.user)}, (err, user) => {
         if (err) return next(err);
 
         return res.json(user);
@@ -68,23 +70,23 @@ exports.user_details = (req, res, next) => {
 };
 
 exports.user_update = (req, res, next) => {
-    const { id } = req.user;
 
-    User.findByIdAndUpdate(id, (err, user) => {
+    User.findOneAndUpdate(req.user, {$set: req.body}, (err, user) => {
         if (err) return next(err);
+
+        console.log(req.body)
 
         return res.status(200).json('User updated.');
     });
 };
 
 exports.user_delete = (req, res, next) => {
-    const { _id } = req.user;
 
-    User.findByIdAndDelete(_id, (err, user) => {
+    User.findByIdAndDelete(new ObjectID(req.user), (err, user) => {
         if (err) return next(err);
 
-        Routes.remove({user: _id }).exec()
-        Runs.remove({user: _id }).exec()
+        // Routes.remove({user: new ObjectID(req.user) }).exec()
+        // Runs.remove({user: new ObjectID(req.user) }).exec()
 
         return res.status(200).json('User deleted.');
     });
