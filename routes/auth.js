@@ -15,5 +15,11 @@ router.post('/users/access-token', validation.login, controller.user_login);
 //Logout User
 // router.delete('/users/access-token', ); // add controller
 
+// Update User
+router.put('/users', controller.user_update);
+
+// Delete User
+router.delete('/users', controller.user_delete);
+
 module.exports = router;
 
