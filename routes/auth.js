@@ -7,10 +7,13 @@ const controller = require("../controllers/auth");
 router.post('/users', validation.create, controller.user_create);
 
 // User Creds
-router.get('/users', auth, validation.login, controller.user_details);
+router.get('/users', auth.verifyToken, validation.login, controller.user_details);
 
 // Login User
 router.post('/users/access-token', validation.login, controller.user_login);
 
 //Logout User
 // router.delete('/users/access-token', ); // add controller
+
+module.exports = router;
+

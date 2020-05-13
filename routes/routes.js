@@ -7,14 +7,17 @@ const controller = require("../controllers/routes");
 router.post('/routes', validation.create, controller.route_create);
 
 // Get Routes
-router.get('/routes', auth, controller.route_findByUserID);
+router.get('/routes', auth.verifyToken, controller.route_findByUserID);
 
 // Get Route Details
-router.get('/routes/:_id', auth, controller.route_details);
+router.get('/routes/:_id', auth.verifyToken, controller.route_details);
 
 // Update Route
-router.put('/routes/:_id', auth, controller.route_update);
+router.put('/routes/:_id', auth.verifyToken, controller.route_update);
 
 // Delete Route
-router.delete('/routes/:_id', auth, controller.route_delete);
+router.delete('/routes/:_id', auth.verifyToken, controller.route_delete);
+
+module.exports = router;
+
 
