@@ -1,25 +1,30 @@
 const { body, validationResult } = require("express-validator");
 
-exports.create = (req, res, next) => {
+module.exports = (req, res, next) => {
     const errors = validationResult(req);
 
-    body("userID", "User ID received an invalid input")
-        .exists().withMessage("User ID is a required field")
-        .trim()
-        .escape();
-
-    body("routeName", "routeName received an invalid input")
+    body("name", "routeName received an invalid input")
         .exists().withMessage("Route Name is a required field")
         .trim()
         .escape();
 
-    body("length", "Length received an invalid input")
-        .exists().withMessage("Length is a required field")
+    body("distance", "Distance received an invalid input")
+        .exists().withMessage("Distance is a required field")
         .trim()
         .escape();
 
     body("duration", "Duration received an invalid input")
-        .exists().withMessage("Duration is a required field")
+        .optional()
+        .trim()
+        .escape();
+
+    body("pace", "Pace received an invalid input")
+        .optional()
+        .trim()
+        .escape();
+
+    body("calories", "Calories received an invalid input")
+        .optional()
         .trim()
         .escape();
 
