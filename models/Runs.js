@@ -6,4 +6,7 @@ module.exports = model("runs", new Schema({
     route: { type: Schema.Types.ObjectId, required: true, ref: "routes" },
     avgPace: { type: Number, required: true },
     totalTime: { type: Number, required: true }
+}, {
+    timestamps: false,
+    versionKey: false
 }));
