@@ -4,9 +4,9 @@ exports.run_create = (req, res, next) => {
     const { user, timestamp, route, avgPace, totalTime } = req.body
 
     const run = new Run ({
-        userID: user,
-        day: timestamp,
-        routeID: route,
+        user: user,
+        user: timestamp,
+        route: route,
         avgPace: avgPace,
         totalTime: totalTime,
     })
