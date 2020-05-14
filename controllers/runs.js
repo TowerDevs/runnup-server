@@ -5,7 +5,7 @@ exports.run_create = (req, res, next) => {
 
     const run = new Run ({
         user: user,
-        user: timestamp,
+        timestamp: timestamp,
         route: route,
         avgPace: avgPace,
         totalTime: totalTime,
