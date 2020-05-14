@@ -7,19 +7,19 @@ const controller = require("../controllers/runs");
 router.post('/runs', validation.create, controller.run_create);
 
 // Get Run
-router.get('/runs', auth.verifyToken, controller.run_findByUserID);
+router.get('/runs', auth, controller.run_findByUserID);
 
 // Get Run by Route
-router.get('/runs', auth.verifyToken, controller.run_findByRouteID);
+router.get('/runs', auth, controller.run_findByRouteID);
 
 // Get Run Details
-router.get('/runs/:_id', auth.verifyToken, controller.run_details);
+router.get('/runs/:_id', auth, controller.run_details);
 
 // Update Run
-router.put('/runs/:_id', auth.verifyToken, controller.run_update);
+router.put('/runs/:_id', auth, controller.run_update);
 
 // Delete Run
-router.delete('/runs/:_id', auth.verifyToken, controller.run_delete)
+router.delete('/runs/:_id', auth, controller.run_delete)
 
 module.exports = router;
 
