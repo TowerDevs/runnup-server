@@ -17,7 +17,7 @@ describe("POST /api/v1/users", () => {
         let user = {
             name: "Gerald Smith",
             password: "password",
-            email: "m89@michaeldsilva.com"
+            email: "m2@michaeldsilva.com"
         }
         chai.request(server)
         .post("/api/v1/users")
@@ -55,6 +55,8 @@ describe("POST /api/v1/users", () => {
             res.body.should.be.a("string");
 
             res.body.should.equal("User already exists");
+
+            console.log(res.body);
 
             done();
         });
@@ -106,6 +108,8 @@ describe("UPDATE /api/v1/users", () => {
 
             res.body.should.equal("User updated.");
 
+            console.log(res.body);
+
             done();
 
         });
@@ -127,6 +131,8 @@ describe("DELETE /api/v1/users", () => {
             res.body.should.be.a("string");
 
             res.body.should.equal("User deleted.");
+
+            console.log(res.body);
 
             done();
 
