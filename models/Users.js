@@ -10,5 +10,6 @@ module.exports = model("users", new Schema({
     state: String,
     spotify: String,
     friendRequests: [{type: Schema.Types.ObjectId, ref: 'users'}],
+    blockedUsers: [{type: Schema.Types.ObjectId, ref: 'users'}],
     friends: [friendSchema]
 }));

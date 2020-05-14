@@ -14,7 +14,6 @@ exports.friend_add = (req, res, next) => {
 
     var bool;
 
-
     User.findOne({ email }, (err, user) => {
 
         if (err) return console.log(err)
@@ -24,16 +23,16 @@ exports.friend_add = (req, res, next) => {
             return res.status(403).json("You cannot add yourself as a friend.")
         }
 
-        else if (0){
+        // else if (0){
 
-            let sender = User.findOne({_id: new ObjectID(req.user)},function(err,user){
-                if (err) throw err;
-                //console.log("returned from the model: ",user.friends)
-                return user.friends;
-            })
-            console.log("Email: "+ email)    
+        //     let sender = User.findOne({_id: new ObjectID(req.user)},function(err,user){
+        //         if (err) throw err;
+        //         //console.log("returned from the model: ",user.friends)
+        //         return user.friends;
+        //     })
+        //     console.log("Email: "+ email)    
 
-        }
+        // }
 
         else {
 
@@ -68,18 +67,16 @@ exports.friend_add = (req, res, next) => {
     
                     const friend = new Friend({
                         email: email,
-                        status: "pending"
+                        status: "Pending"
                     })
                     User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
                         if (err) return res.status(500).json(err.message);        
                         console.log(req.body)        
-                        return res.status(200).json('Friend Added.');
-                    });
-                    User.findOneAndUpdate({email: email}, {$push: {friendRequests: new ObjectID(req.user)}}, (err) => {
-                        if (err) return res.status(500).json(err.message);        
-                        console.log(req.body)        
-                        return res.status(200).json('Friend request sent.');
-                    });
+                        User.findOneAndUpdate({email: email}, {$push: {friendRequests: new ObjectID(req.user)}}, (err) => {
+                            if (err) return res.status(500).json(err.message);        
+                            console.log(req.body)        
+                            return res.status(200).json('Friend request sent.');
+                        });                    });
                 }
                 else {
                     console.log("something went wrong")
@@ -92,5 +89,59 @@ exports.friend_add = (req, res, next) => {
 
     });
     
+}
+
+exports.friend_respond = (req, res, next) => {
+
+    const { requestor, response } = req.body;
+
+    if (response == "Accept") {
+        const friend = new Friend({
+            friend: requestor,
+            status: "Accepted"
+        })
+        User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}, $pull: {friendRequests: requestor}}, (err, user) => {
+            if (err) return res.status(500).json(err.message);        
+            console.log(req.body)        
+            console.log(user.friends[1])        
+            console.log("Checking for match for user with ID: " + requestor + " and has a friend with this email: " + user.email)  
+            
+            const friendEmail = user.email
+
+            User.findOneAndUpdate({_id: new ObjectID(requestor), 'friends.email': friendEmail}, {$set: {'friends.$.status': 'Accepted'}}, (err, user) => {
+                if (err) return res.status(500).json(err.message);        
+                console.log(user)        
+                return res.status(200).json('Friend status set to accepted.');
+            });
+        });
+
+    } else if (response == "Reject") {
+        User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$pull: {friendRequests: requestor}}, (err, user) => {
+            if (err) return res.status(500).json(err.message);        
+            console.log(req.body + "removed from friend requestd")        
+            const friendEmail = user.email
+
+            User.findOneAndUpdate({_id: new ObjectID(requestor) }, {$pull: { friends: { email: friendEmail }}}, (err, user) => {
+                if (err) return res.status(500).json(err.message);        
+                console.log(user)        
+                return res.status(200).json('Friend status set to rejected.');
+            });        
+        });
+    } else if (response == "Block") {
+        User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {blockedUsers: requestor}, $pull: {friendRequests: requestor}}, (err, user) => {
+            if (err) return res.status(500).json(err.message);        
+            console.log(req.body)        
+            const friendEmail = user.email
+
+            User.findOneAndUpdate({_id: new ObjectID(requestor), 'friends.email': friendEmail}, {$set: {'friends.$.status': 'Blocked'}}, (err, user) => {
+                if (err) return res.status(500).json(err.message);        
+                console.log(user)        
+                return res.status(200).json('Blocked.');
+            });        
+        });
+    }
+
+
+
 }
 
