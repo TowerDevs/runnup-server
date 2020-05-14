@@ -118,13 +118,13 @@ exports.friend_respond = (req, res, next) => {
     } else if (response == "Reject") {
         User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$pull: {friendRequests: requestor}}, (err, user) => {
             if (err) return res.status(500).json(err.message);        
-            console.log(req.body)        
+            console.log(req.body + "removed from friend requestd")        
             const friendEmail = user.email
 
-            User.findOneAndUpdate({_id: new ObjectID(requestor) }, {$pull: {'friends.email': friendEmail}}, (err, user) => {
+            User.findOneAndUpdate({_id: new ObjectID(requestor) }, {$pull: { friends: { email: friendEmail }}}, (err, user) => {
                 if (err) return res.status(500).json(err.message);        
                 console.log(user)        
-                return res.status(200).json('Friend status set to accepted.');
+                return res.status(200).json('Friend status set to rejected.');
             });        
         });
     } else if (response == "Block") {
