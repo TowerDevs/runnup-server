@@ -25,7 +25,7 @@ exports.route_create = (req, res, next) => {
 }
 
 exports.route_findByUserID = function(req,res,next) {
-    Route.find({ user : req.user })
+    Route.find({ user : req.user }, 'name distance duration pace calories')
     .exec(function(err, routes){
         if(err){
             
