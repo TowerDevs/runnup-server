@@ -75,6 +75,11 @@ exports.friend_add = (req, res, next) => {
                         console.log(req.body)        
                         return res.status(200).json('Friend Added.');
                     });
+                    User.findOneAndUpdate({email: email}, {$push: {friendRequests: new ObjectID(req.user)}}, (err) => {
+                        if (err) return next(err);        
+                        console.log(req.body)        
+                        return res.status(200).json('Friend request sent.');
+                    });
                 }
                 else {
                     console.log("something went wrong")
