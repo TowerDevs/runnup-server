@@ -21,20 +21,7 @@ exports.friend_add = (req, res, next) => {
 
         else if (user.id == req.user) {
             return res.status(403).json("You cannot add yourself as a friend.")
-        }
-
-        // else if (0){
-
-        //     let sender = User.findOne({_id: new ObjectID(req.user)},function(err,user){
-        //         if (err) throw err;
-        //         //console.log("returned from the model: ",user.friends)
-        //         return user.friends;
-        //     })
-        //     console.log("Email: "+ email)    
-
-        // }
-
-        else {
+        } else {
 
              User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
                 if (err) return next(err);        
@@ -141,7 +128,37 @@ exports.friend_respond = (req, res, next) => {
         });
     }
 
+}
 
+exports.friend_manage = (req, res, next) => {
+
+    const { friend, decision } = req.body;
+
+    if (decision == "Remove"){
+        User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$pull: { friends: { friend: friend }}}, (err, user) => {
+            if (err) return res.status(500).json(err.message);        
+            console.log(req.body + "removed from friend requestd")        
+            const friendEmail = user.email
+
+            User.findOneAndUpdate({_id: new ObjectID(friend) }, {$pull: { friends: { email: friendEmail }}}, (err, user) => {
+                if (err) return res.status(500).json(err.message);        
+                console.log(user)        
+                return res.status(200).json('Friend has been removed.');
+            });        
+        });
+    } else if (decision == "Block"){
+        User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {blockedUsers: friend}, $pull: { friends: { friend: friend }}}, (err, user) => {
+            if (err) return res.status(500).json(err.message);        
+            console.log(req.body + "removed from friend requestd")        
+            const friendEmail = user.email
+
+            User.findOneAndUpdate({_id: new ObjectID(friend), 'friends.email': friendEmail }, {$set: {'friends.$.status': 'Blocked'}}, (err, user) => {
+                if (err) return res.status(500).json(err.message);        
+                console.log(user)        
+                return res.status(200).json('Friend has been blocked.');
+            });        
+        });
+    }
 
 }
 

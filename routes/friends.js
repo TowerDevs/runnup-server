@@ -9,4 +9,7 @@ router.put('/friends', auth, validation.create, controller.friend_add);
 // Repond to friend request
 router.put('/friends/respond', auth, controller.friend_respond);
 
+// Manage friend
+router.put('/friends/manage', auth, controller.friend_manage);
+
 module.exports = router;
