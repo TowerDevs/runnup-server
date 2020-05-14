@@ -1,6 +1,6 @@
 const { body, validationResult } = require("express-validator");
 
-module.exports = (req, res, next) => {
+exports.create = (req, res, next) => {
     const errors = validationResult(req);
 
     body("email", "Email received an invalid input")
@@ -13,4 +13,8 @@ module.exports = (req, res, next) => {
     if(!errors.isEmpty()) return res.status(400).json(errors.msg);
 
     return next();
+};
+
+exports.update = (req, res, next) => {
+
 };
