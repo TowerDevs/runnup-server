@@ -4,7 +4,7 @@ const validation = require("../middleware/validation/routes");
 const controller = require("../controllers/routes");
 
 // Create Route
-router.post('/routes', auth.verifyToken, validation.create, controller.route_create);
+router.post('/routes', auth, validation, controller.route_create);
 
 // Get Routes
 router.get('/routes', auth, controller.route_findByUserID);
@@ -13,7 +13,7 @@ router.get('/routes', auth, controller.route_findByUserID);
 router.get('/routes/:_id', auth, controller.route_details);
 
 // Update Route
-router.put('/routes/:_id', auth, controller.route_update);
+router.put('/routes/:_id', auth, validation, controller.route_update);
 
 // Delete Route
 router.delete('/routes/:_id', auth, controller.route_delete);
