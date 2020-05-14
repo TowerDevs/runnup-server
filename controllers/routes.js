@@ -1,14 +1,20 @@
 const Route = require('../models/Routes')
 
+const ObjectID = require('mongodb').ObjectID;
+
 exports.route_create = (req, res, next) => {
-    const { userID, routeName, length, duration } = req.body
+    const { name, length, duration, pace, calories } = req.body
 
     const route = new Route ({
-        userID: userID,
-        routeName: routeName,
-        length: length,
+        user:  ObjectID(req.user),
+        name: name,
+        distance: length,
         duration: duration,
+        pace: pace,
+        calories: calories
     })
+
+    console.log(req.user)
 
     route.save(function (err) {
         if (err) {
@@ -19,12 +25,12 @@ exports.route_create = (req, res, next) => {
 }
 
 exports.route_findByUserID = function(req,res,next) {
-    Route.find({ userID : userID })
+    Route.find({ user : req.user })
     .exec(function(err, routes){
         if(err){
             
             return res.status(500).send({
-                message: "Error retrieving routes with given User ID" + req.params.userID
+                message: "Error retrieving routes with given User ID" + req.user
             })
         }
         res.send(routes);
