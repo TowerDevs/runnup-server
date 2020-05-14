@@ -10,13 +10,13 @@ router.post('/routes', auth.verifyToken, validation.create, controller.route_cre
 router.get('/routes', auth.verifyToken, controller.route_findByUserID);
 
 // Get Route Details
-router.get('/routes/:_id', auth.verifyToken, controller.route_details);
+router.get('/routes/:id', auth.verifyToken, controller.route_details);
 
 // Update Route
-router.put('/routes/:_id', auth.verifyToken, controller.route_update);
+router.put('/routes/:id', auth.verifyToken, controller.route_update);
 
 // Delete Route
-router.delete('/routes/:_id', auth.verifyToken, controller.route_delete);
+router.delete('/routes/:id', auth.verifyToken, controller.route_delete);
 
 module.exports = router;
 
