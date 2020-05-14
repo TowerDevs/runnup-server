@@ -1,18 +1,20 @@
 const secretKey = process.env.AUTH_SECRET;
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-exports.verifyToken = (req, res, next) => {
-    if(!req.headers.authorization){
-        return res.status(401).send('Unauthorized request')
+module.exports = (req, res, next) => {
+    const token = req.headers.authorization.split(' ')[0];
+
+    if (!token) {
+        return res.status(401).json('Unauthorized request');
     }
-    let token = req.headers.authorization.split(' ')[0]
-    if (token === 'null'){
-        return res.status(401).send('Unauthorized request')
+
+    try {
+        const payload = jwt.verify(token, secretKey);
+
+        req.user = payload.subject;
+
+        return next();
+    } catch (e) {
+        return res.status(401).json('Token is not valid');
     }
-    let payload = jwt.verify(token, secretKey)
-    if(!payload) {
-        return res.status(401).send('Unauthorized request')
-    }
-    req.user = payload.subject
-    next()
-}
+};
