@@ -8,7 +8,12 @@ exports.friend_add = (req, res, next) => {
 
     const { email } = req.body;
 
+    let emailToCheck = req.body.email;
+
     console.log({email})
+
+    var bool;
+
 
     User.findOne({ email }, (err, user) => {
 
@@ -16,22 +21,71 @@ exports.friend_add = (req, res, next) => {
         else if (!user) return res.status(404).json("User does not exist")
 
         else if (user.id == req.user) {
-            return res.status(404).json("You cannot add yourself as a friend.")
+            return res.status(403).json("You cannot add yourself as a friend.")
+        }
+
+        else if (0){
+
+            let sender = User.findOne({_id: new ObjectID(req.user)},function(err,user){
+                if (err) throw err;
+                //console.log("returned from the model: ",user.friends)
+                return user.friends;
+            })
+            console.log("Email: "+ email)    
+
         }
 
         else {
 
-            console.log("User ID" + user._id)
 
-            const friend = new Friend({
-                email: email,
-                status: "pending"
-            })
-            User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
+             User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
                 if (err) return next(err);        
-                console.log(req.body)        
-                return res.status(200).json('Friend Added.');
+
+                var isInArray = function() {
+                    bool = false;
+                    for (i = 0; i < user.friends.length; i++) {
+                        console.log("Checking " + user.friends[i].email + " and " + emailToCheck)
+
+                        if (user.friends[i].email == emailToCheck){
+                            bool = true;
+                            return bool
+                            break
+                        } 
+                    }
+                    console.log(bool)
+
+                    return bool
+                }
+
+                bool = isInArray();
+
+                console.log("isInArray: " + bool)
+
+                return bool
+     
             });
+
+            console.log("Check: " + bool)
+
+            if (bool) {
+                return res.status(403).json('Friend is already added.');
+            }
+            else if (!bool) {
+                console.log(req.user + " added user with email: " + email)
+
+                const friend = new Friend({
+                    email: email,
+                    status: "pending"
+                })
+                User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
+                    if (err) return next(err);        
+                    console.log(req.body)        
+                    return res.status(200).json('Friend Added.');
+                });
+            }
+            else {
+                console.log("something went wrong")
+            }
 
         }
 
