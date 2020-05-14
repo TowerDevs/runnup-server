@@ -123,7 +123,7 @@ exports.friend_respond = (req, res, next) => {
             console.log(req.body)        
             const friendEmail = user.email
 
-            User.findOneAndUpdate({_id: new ObjectID(requestor), 'friends.email': friendEmail}, {$set: {'friends.$.status': 'Rejected'}}, (err, user) => {
+            User.findOneAndUpdate({_id: new ObjectID(requestor) }, {$pull: {'friends.email': friendEmail}}, (err, user) => {
                 if (err) return res.status(500).json(err.message);        
                 console.log(user)        
                 return res.status(200).json('Friend status set to accepted.');
