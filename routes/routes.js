@@ -4,7 +4,7 @@ const validation = require("../middleware/validation/routes");
 const controller = require("../controllers/routes");
 
 // Create Route
-router.post('/routes', validation.create, controller.route_create);
+router.post('/routes', auth.verifyToken, validation.create, controller.route_create);
 
 // Get Routes
 router.get('/routes', auth, controller.route_findByUserID);
