@@ -4,7 +4,7 @@ const validation = require("../middleware/validation/runs");
 const controller = require("../controllers/runs");
 
 // Create Run
-router.post('/runs', validation.create, controller.run_create);
+router.post('/runs', validation, controller.run_create);
 
 // Get Run
 router.get('/runs', auth, controller.run_findByUserID);
@@ -16,7 +16,7 @@ router.get('/runs', auth, controller.run_findByRouteID);
 router.get('/runs/:_id', auth, controller.run_details);
 
 // Update Run
-router.put('/runs/:_id', auth, controller.run_update);
+router.put('/runs/:_id', auth, validation, controller.run_update);
 
 // Delete Run
 router.delete('/runs/:_id', auth, controller.run_delete)
