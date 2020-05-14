@@ -61,6 +61,30 @@ describe("POST /api/v1/users", () => {
     });
 });
 
+// Login user
+describe("POST /api/v1/users/access-token", () => {
+    it("It should return a 201 status with the user's token", done => {
+        let userData = {
+            email: "m2@michaeldsilva.com",
+            password: "password",
+        }
+        chai.request(server)
+        .post("/api/v1/users/access-token")
+        .send(userData)
+        .end((err, res) => {
+            if(err) throw err;
+
+            res.should.have.property("status", 201);
+
+            res.body.should.be.a("string");
+
+            done();
+
+            return auth = res.body;
+        });
+    });
+});
+
 // Update new user
 describe("UPDATE /api/v1/users", () => {
     it("It should return a 200 status with a string saying the user has been updates", done => {
