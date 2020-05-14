@@ -1,7 +1,7 @@
 /* --- Dependencies --- */
 require("dotenv").config();
 const express = require("express");
-const path = require("path");
+// const path = require("path");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -9,7 +9,8 @@ const xss = require("xss-clean");
 
 /* --- Configuration --- */
 const app = express();
-const port = process.env.NODE_ENV || 3001;
+const port = process.env.PORT || 3001;
+const env = process.env.NODE_ENV;
 require("./config/db");
 
 /* --- Middleware --- */
