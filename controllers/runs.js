@@ -19,7 +19,7 @@ exports.run_create = (req, res, next) => {
 }
 
 exports.run_findByUserID = function(req,res,next) {
-    Run.find({ userID : userID })
+    Run.find({ user : user })
     .exec(function(err, runs){
         if(err){
             
@@ -33,8 +33,8 @@ exports.run_findByUserID = function(req,res,next) {
 
 exports.run_findByRouteID = function(req,res,next) {
     Run.find({ 
-        userID : userID,
-        routeID : routeID 
+        user : user,
+        route : route 
     })
     .exec(function(err, runs){
         if(err){
