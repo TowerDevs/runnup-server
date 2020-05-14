@@ -1,12 +1,12 @@
 const Run = require('../models/Routes')
 
 exports.run_create = (req, res, next) => {
-    const { userID, day, routeID, avgPace, totalTime } = req.body
+    const { user, timestamp, route, avgPace, totalTime } = req.body
 
     const run = new Run ({
-        userID: userID,
-        day: day,
-        routeID: routeID,
+        userID: user,
+        day: timestamp,
+        routeID: route,
         avgPace: avgPace,
         totalTime: totalTime,
     })
