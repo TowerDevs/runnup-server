@@ -12,9 +12,8 @@ exports.run_create = (req, res, next) => {
     })
 
     run.save(function (err) {
-        if (err) {
-            return next(err);
-        }
+        if (err) return res.status(500).json(err.message);
+        
         res.send('Run added successfully')
     })
 }
@@ -52,7 +51,7 @@ exports.run_update = function (req, res, next) {
     Run.findByIdAndUpdate(req.params.id, {$set: req.body}, 
     function (err, run) {
         if (err) {
-            return next(err);
+            return res.status(500).json(err.message);
         }
         res.send(run);
     });
@@ -60,14 +59,14 @@ exports.run_update = function (req, res, next) {
 
 exports.run_details = function (req, res, next) {
     Run.findById(req.params.id, function (err, run) {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
         res.send(run);
     })
 };
 
 exports.run_delete = function (req, res, next) {
     Route.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
         res.send('Deleted successfully!');
     })
 };

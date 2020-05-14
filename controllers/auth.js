@@ -63,7 +63,7 @@ exports.user_login = (req, res, next) => {
 exports.user_details = (req, res, next) => {
 
     User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
 
         return res.json(user);
     })
@@ -72,7 +72,7 @@ exports.user_details = (req, res, next) => {
 exports.user_update = (req, res, next) => {
 
     User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$set: req.body}, (err, user) => {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
 
         console.log(req.body)
 
@@ -83,7 +83,7 @@ exports.user_update = (req, res, next) => {
 exports.user_delete = (req, res, next) => {
 
     User.deleteOne({_id: new ObjectID(req.user)}, (err, user) => {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
 
         // Routes.deleteMany({user: new ObjectID(req.user) }).exec()
         // Runs.deleteMany({user: new ObjectID(req.user) }).exec()
