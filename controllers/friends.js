@@ -37,7 +37,6 @@ exports.friend_add = (req, res, next) => {
 
         else {
 
-
              User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
                 if (err) return next(err);        
 
@@ -61,32 +60,29 @@ exports.friend_add = (req, res, next) => {
 
                 console.log("isInArray: " + bool)
 
+                if (bool) {
+                    return res.status(403).json('Friend is already added.');
+                }
+                else if (!bool) {
+                    console.log(req.user + " added user with email: " + email)
+    
+                    const friend = new Friend({
+                        email: email,
+                        status: "pending"
+                    })
+                    User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
+                        if (err) return next(err);        
+                        console.log(req.body)        
+                        return res.status(200).json('Friend Added.');
+                    });
+                }
+                else {
+                    console.log("something went wrong")
+                }
+
                 return bool
      
             });
-
-            console.log("Check: " + bool)
-
-            if (bool) {
-                return res.status(403).json('Friend is already added.');
-            }
-            else if (!bool) {
-                console.log(req.user + " added user with email: " + email)
-
-                const friend = new Friend({
-                    email: email,
-                    status: "pending"
-                })
-                User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
-                    if (err) return next(err);        
-                    console.log(req.body)        
-                    return res.status(200).json('Friend Added.');
-                });
-            }
-            else {
-                console.log("something went wrong")
-            }
-
         }
 
     });
