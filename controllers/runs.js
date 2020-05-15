@@ -1,4 +1,4 @@
-const Run = require('../models/Routes')
+const Run = require('../models/runs')
 
 const ObjectID = require('mongodb').ObjectID;
 
