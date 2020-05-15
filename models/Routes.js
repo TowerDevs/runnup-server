@@ -4,9 +4,9 @@ module.exports = model("routes", new Schema({
     user: { type: Schema.ObjectId, required: true, ref: "users" },
     name: { type: String, required: true },
     distance: { type: Number, required: true },
-    duration: Number,
-    pace: Number,
-    calories: Number
+    duration: { type: Number, default: 0 },
+    pace: { type: Number, default: 0 },
+    calories: { type: Number, default: 0 }
 }, {
     timestamps: false,
     versionKey: false
