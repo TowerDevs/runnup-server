@@ -4,7 +4,7 @@ const User = require('../models/Users');
 const ObjectID = require('mongodb').ObjectID;
 
 
-exports.friend_add = (req, res, next) => {
+exports.friend_add = (req, res) => {
 
     const { email } = req.body;
 
@@ -28,7 +28,7 @@ exports.friend_add = (req, res, next) => {
         } else {
 
              User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
-                if (err) return next(err);
+                if (err) return res.status(500).json(err.message);        
                 
                 var isInFriends = function() {
                     bool = false;
@@ -123,7 +123,7 @@ exports.friend_add = (req, res, next) => {
     
 }
 
-exports.friend_respond = (req, res, next) => {
+exports.friend_respond = (req, res) => {
 
     const { requestor, response } = req.body;
 
@@ -174,7 +174,7 @@ exports.friend_respond = (req, res, next) => {
 
 }
 
-exports.friend_manage = (req, res, next) => {
+exports.friend_manage = (req, res) => {
 
     const { friend, decision } = req.body;
 

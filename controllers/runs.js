@@ -2,7 +2,7 @@ const Run = require('../models/runs')
 
 const ObjectID = require('mongodb').ObjectID;
 
-exports.run_create = (req, res, next) => {
+exports.run_create = (req, res) => {
     const { timestamp, route, avgPace, totalTime } = req.body
 
     const run = new Run ({
@@ -20,7 +20,7 @@ exports.run_create = (req, res, next) => {
     })
 }
 
-exports.run_findByUserID = function(req,res,next) {
+exports.run_findByUserID = function(req, res) {
     Run.find({ user : req.user })
     .exec(function(err, runs){
         if(err){
@@ -34,7 +34,7 @@ exports.run_findByUserID = function(req,res,next) {
     });
 };
 
-exports.run_findByRouteID = function(req,res,next) {
+exports.run_findByRouteID = function(req, res) {
     Run.find({ 
         user : req.user,
         route : route 
@@ -51,7 +51,7 @@ exports.run_findByRouteID = function(req,res,next) {
     });
 };
 
-exports.run_update = function (req, res, next) {
+exports.run_update = function (req, res) {
     Run.findByIdAndUpdate(req.params.id, {$set: req.body}, 
     function (err, run) {
         if (err) return res.status(500).json(err.message);
@@ -60,7 +60,7 @@ exports.run_update = function (req, res, next) {
     });
 };
 
-exports.run_details = function (req, res, next) {
+exports.run_details = function (req, res) {
     Run.findById(req.params.id, function (err, run) {
         if (err) return res.status(500).json(err.message);
         console.log('Run details retrieved')
@@ -68,7 +68,7 @@ exports.run_details = function (req, res, next) {
     })
 };
 
-exports.run_delete = function (req, res, next) {
+exports.run_delete = function (req, res) {
     Route.findByIdAndRemove(req.params.id, function (err, run) {
         if (err) return res.status(500).json(err.message);
         console.log('Run deleted')

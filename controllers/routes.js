@@ -2,7 +2,7 @@ const Route = require('../models/Routes')
 
 const ObjectID = require('mongodb').ObjectID;
 
-exports.route_create = (req, res, next) => {
+exports.route_create = (req, res) => {
     const { name, length, duration, pace, calories } = req.body
 
     const route = new Route ({
@@ -23,7 +23,7 @@ exports.route_create = (req, res, next) => {
     })
 }
 
-exports.route_findByUserID = function(req,res,next) {
+exports.route_findByUserID = function(req, res) {
     Route.find({ user : req.user }, 'name distance duration pace calories')
     .exec(function(err, routes){
         if(err){
@@ -36,7 +36,7 @@ exports.route_findByUserID = function(req,res,next) {
     });
 };
 
-exports.route_details = function (req, res, next) {
+exports.route_details = function (req, res) {
     Route.findById(req.params.id, function (err, route) {
         if (err) return res.status(500).json(err.message);
         console.log("Route details retrieved.")
@@ -44,7 +44,7 @@ exports.route_details = function (req, res, next) {
     })
 };
 
-exports.route_update = function (req, res, next) {
+exports.route_update = function (req, res) {
     Route.findByIdAndUpdate(req.params.id, {$set: req.body}, 
     function (err, route) {
         if (err) return res.status(500).json(err.message);
@@ -53,7 +53,7 @@ exports.route_update = function (req, res, next) {
     });
 };
 
-exports.route_delete = function (req, res, next) {
+exports.route_delete = function (req, res) {
     Route.findByIdAndRemove(req.params.id, function (err, route) {
         if (err) return res.status(500).json(err.message);
         console.log("Route deleted.")
