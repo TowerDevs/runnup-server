@@ -15,8 +15,13 @@ exports.create = (req, res, next) => {
         .trim()
         .escape();
 
-    body("name", "Name received an invalid input")
-        .exists().withMessage("Name is a required field")
+    body("first", "First Name received an invalid input")
+        .exists().withMessage("First Name is a required field")
+        .trim()
+        .escape();
+
+    body("last", "Last Name received an invalid input")
+        .exists().withMessage("Last Name is a required field")
         .trim()
         .escape();
 
