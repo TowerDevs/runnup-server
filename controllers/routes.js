@@ -17,9 +17,8 @@ exports.route_create = (req, res, next) => {
     console.log(req.user)
 
     route.save(function (err) {
-        if (err) {
-            return next(err);
-        }
+        if (err) return res.status(500).json(err.message);
+
         res.status(201).send('Route added successfully')
     })
 }
@@ -39,7 +38,7 @@ exports.route_findByUserID = function(req,res,next) {
 
 exports.route_details = function (req, res, next) {
     Route.findById(req.params.id, function (err, route) {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
         res.status(200).send(route);
     })
 };
@@ -47,16 +46,15 @@ exports.route_details = function (req, res, next) {
 exports.route_update = function (req, res, next) {
     Route.findByIdAndUpdate(req.params.id, {$set: req.body}, 
     function (err, route) {
-        if (err) {
-            return next(err);
-        }
+        if (err) return res.status(500).json(err.message);
+
         res.status(200).send(route);
     });
 };
 
 exports.route_delete = function (req, res, next) {
     Route.findByIdAndRemove(req.params.id, function (err) {
-        if (err) return next(err);
+        if (err) return res.status(500).json(err.message);
         res.status(200).send('Deleted successfully!');
     })
 };
