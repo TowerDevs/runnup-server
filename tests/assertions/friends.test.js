@@ -61,13 +61,13 @@ describe("POST /api/v1/users/access-token", () => {
 });
 
 // user1 sends friend request to user2
-describe("PUT /api/v1/friends", () => {
+describe("POST /api/v1/friends", () => {
     it("It should return a 200 status with a message saying the friend request was sent", done => {
         let friend = {
             email: "m4@michaeldsilva.com"
         }
         chai.request(server)
-        .put("/api/v1/friends")
+        .post("/api/v1/friends")
         .set('Authorization', auth1)
         .send(friend)
         .end((err, res) => {
@@ -88,14 +88,14 @@ describe("PUT /api/v1/friends", () => {
 });
 
 // user2 responds to user1's friend request
-describe("PUT /api/v1/friends/respond", () => {
+describe("PATCH /api/v1/friends", () => {
     it("It should return a 200 status with a message saying the status of the request", done => {
         let decision = {
             requestor: "5ebb525cb9d1723b64896514",
             response: "Reject"
         }        
         chai.request(server)
-        .put("/api/v1/friends/respond")
+        .patch("/api/v1/friends")
         .set('Authorization', auth2)
         .send(decision)
         .end((err, res) => {
