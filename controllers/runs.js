@@ -3,7 +3,7 @@ const Run = require('../models/Runs')
 const ObjectID = require('mongodb').ObjectID;
 
 exports.run_create = (req, res) => {
-    const { timestamp, route, avgPace, totalTime } = req.body
+    const { timestamp, route, avgPace, totalTime, distanceRan } = req.body
 
     const run = new Run ({
         user:  ObjectID(req.user),
@@ -11,13 +11,19 @@ exports.run_create = (req, res) => {
         route: route,
         avgPace: avgPace,
         totalTime: totalTime,
+        distanceRan: distanceRan
     })
 
-    run.save(function (err) {
-        if (err) return res.status(500).json(err.message);
-        console.log('Run added successfully')
-        res.status(201).json(run)
-    })
+    User.findOneAndUpdate({_id: new ObjectID(requestor)}, {$inc: {'runStats.kilometersRan': distanceRan, 'runStats.minutesRan': totalTime, 'runStats.runsCompleted': 1}}, (err, user) => {
+        if (err) return res.status(500).json(err.message);        
+        run.save(function (err) {
+            if (err) return res.status(500).json(err.message);
+            console.log('Run added successfully')
+            res.status(201).json(run)
+        })
+    });  
+
+
 }
 
 exports.run_findByUserID = function(req, res) {
