@@ -3,7 +3,10 @@ const { model, Schema } = require("mongoose");
 const friendSchema = require('../models/Friends').schema;
 
 module.exports = model("users", new Schema({
-    name: {type: String, required: true},
+    name: {
+        first: {type: String, required: true},
+        last: {type: String, required: true}
+    },
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     country: String,

@@ -10,7 +10,7 @@ const ObjectID = require('mongodb').ObjectID;
 
 
 exports.user_create = (req, res) => {
-    const { name, email, password, region } = req.body
+    const { first, last, email, password, region } = req.body
 
     User.findOne({ email }, (err, user) => {
         if (err) console.log(err)
@@ -19,7 +19,10 @@ exports.user_create = (req, res) => {
 
         else {
             const user = new User({
-                name: name,
+                name: {
+                    first,
+                    last
+                },
                 email: email,
                 password: bcrypt.hashSync(password, 10),
                 region: region
