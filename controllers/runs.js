@@ -69,9 +69,9 @@ exports.run_details = function (req, res, next) {
 };
 
 exports.run_delete = function (req, res, next) {
-    Route.findByIdAndRemove(req.params.id, function (err) {
+    Route.findByIdAndRemove(req.params.id, function (err, run) {
         if (err) return res.status(500).json(err.message);
         console.log('Run deleted')
-        res.status(200).json('Deleted successfully!');
+        res.status(200).json(run);
     })
 };
