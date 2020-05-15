@@ -8,6 +8,8 @@ exports.friend_add = (req, res, next) => {
 
     const { email } = req.body;
 
+    const user1 = req.user;
+
     let emailToCheck = req.body.email;
 
     console.log({email})
@@ -15,6 +17,8 @@ exports.friend_add = (req, res, next) => {
     var bool;
 
     User.findOne({ email }, (err, user) => {
+
+        const user2 = user._id;
 
         if (err) return console.log(err)
         else if (!user) return res.status(404).json("User does not exist")
@@ -24,49 +28,91 @@ exports.friend_add = (req, res, next) => {
         } else {
 
              User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
-                if (err) return next(err);        
-
-                var isInArray = function() {
+                if (err) return next(err);
+                
+                var isInFriends = function() {
                     bool = false;
                     for (i = 0; i < user.friends.length; i++) {
                         console.log("Checking " + user.friends[i].email + " and " + emailToCheck)
 
-                        if (user.friends[i].email == emailToCheck){
+                        if (user.friends[i].email.trim() == emailToCheck.trim()){
                             bool = true;
-                            return bool
+                            console.log("match found")
                             break
                         } 
+                        return bool
                     }
-                    console.log(bool)
+                    console.log("isInFriends: " + bool)
 
                     return bool
                 }
 
-                bool = isInArray();
+                bool = isInFriends();
 
-                console.log("isInArray: " + bool)
+                var isInBlocked = function() {
+                    bool2 = false;
+                    console.log(user.blockedUsers)
+                    for (i = 0; i < user.blockedUsers.length; i++) {
+                        console.log("Checking " + user.blockedUsers[i] + " and " + user2)
+
+                        if (user.blockedUsers[i].toString().trim() == user2.toString().trim()){
+                            bool2 = true;
+                            console.log("match found")
+                            break
+                        } 
+                    }
+                    console.log("isInBlocked: " + bool2)
+
+                    return bool2
+                }
+
+                bool2 = isInBlocked();
+
+                var isInFriendRequests = function() {
+                    bool3 = false;
+                    console.log(user.friendRequests)
+                    for (i = 0; i < user.friendRequests.length; i++) {
+                        console.log("Checking " + user.friendRequests[i] + " and " + user2)
+
+                        if (user.friendRequests[i].toString().trim() == user2.toString().trim()){
+                            bool3 = true;
+                            console.log("match found")
+                            break
+                        } 
+                    }
+                    console.log("isInFriendRequests: " + bool3)
+
+                    return bool3
+                }
+
+                bool3 = isInFriendRequests();
 
                 if (bool) {
-                    return res.status(403).json('Friend is already added.');
+                    return res.status(403).json('Friend is already added, pending or blocked.');
+                } else if (bool2) {
+                    return res.status(403).json('User is in blocked list.');
+                } else if (bool3) {
+                    return res.status(403).json('User has already sent you a friends request.');
                 }
-                else if (!bool) {
-                    console.log(req.user + " added user with email: " + email)
+                else {
+                    console.log(req.user + " sent a request to user with email: " + email)
+                    console.log(user._id)
+                    console.log(user1)
+                    console.log(user2)
     
                     const friend = new Friend({
+                        friend: user2,
                         email: email,
                         status: "Pending"
                     })
                     User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$push: {friends: friend}}, (err) => {
                         if (err) return res.status(500).json(err.message);        
-                        console.log(req.body)        
                         User.findOneAndUpdate({email: email}, {$push: {friendRequests: new ObjectID(req.user)}}, (err) => {
                             if (err) return res.status(500).json(err.message);        
                             console.log(req.body)        
                             return res.status(200).json('Friend request sent.');
-                        });                    });
-                }
-                else {
-                    console.log("something went wrong")
+                        });                    
+                    });
                 }
 
                 return bool
