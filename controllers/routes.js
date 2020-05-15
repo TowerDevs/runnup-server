@@ -14,7 +14,7 @@ exports.route_create = (req, res) => {
         calories: calories
     })
 
-    console.log(req.user)
+    console.log(req.body)
 
     route.save(function (err) {
         if (err) return res.status(500).json(err.message);
