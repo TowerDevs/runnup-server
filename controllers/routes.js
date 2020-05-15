@@ -18,8 +18,8 @@ exports.route_create = (req, res, next) => {
 
     route.save(function (err) {
         if (err) return res.status(500).json(err.message);
-
-        res.status(201).send('Route added successfully')
+        console.log('Route added successfully')
+        res.status(201).json(route)
     })
 }
 
@@ -32,14 +32,15 @@ exports.route_findByUserID = function(req,res,next) {
                 message: "Error retrieving routes with given User ID" + req.user
             })
         }
-        res.status(200).send(routes);
+        res.status(200).json(routes);
     });
 };
 
 exports.route_details = function (req, res, next) {
     Route.findById(req.params.id, function (err, route) {
         if (err) return res.status(500).json(err.message);
-        res.status(200).send(route);
+        console.log("Route details retrieved.")
+        res.status(200).json(route);
     })
 };
 
@@ -47,14 +48,15 @@ exports.route_update = function (req, res, next) {
     Route.findByIdAndUpdate(req.params.id, {$set: req.body}, 
     function (err, route) {
         if (err) return res.status(500).json(err.message);
-
-        res.status(200).send(route);
+        console.log("Route updated.")
+        res.status(200).json(route);
     });
 };
 
 exports.route_delete = function (req, res, next) {
-    Route.findByIdAndRemove(req.params.id, function (err) {
+    Route.findByIdAndRemove(req.params.id, function (err, route) {
         if (err) return res.status(500).json(err.message);
-        res.status(200).send('Deleted successfully!');
+        console.log("Route deleted.")
+        res.status(200).json(route);
     })
 };

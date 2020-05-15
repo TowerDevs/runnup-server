@@ -76,7 +76,7 @@ exports.user_update = (req, res, next) => {
 
         console.log(req.body)
 
-        return res.status(200).json('User updated.');
+        return res.status(200).json(user);
     });
 };
 
@@ -88,6 +88,6 @@ exports.user_delete = (req, res, next) => {
         // Routes.deleteMany({user: new ObjectID(req.user) }).exec()
         // Runs.deleteMany({user: new ObjectID(req.user) }).exec()
 
-        return res.status(200).json('User deleted.');
+        return res.status(200).json(user);
     });
 };
