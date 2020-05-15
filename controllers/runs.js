@@ -1,10 +1,12 @@
 const Run = require('../models/Routes')
 
+const ObjectID = require('mongodb').ObjectID;
+
 exports.run_create = (req, res, next) => {
-    const { user, timestamp, route, avgPace, totalTime } = req.body
+    const { timestamp, route, avgPace, totalTime } = req.body
 
     const run = new Run ({
-        user: user,
+        user:  ObjectID(req.user),
         timestamp: timestamp,
         route: route,
         avgPace: avgPace,
@@ -19,12 +21,12 @@ exports.run_create = (req, res, next) => {
 }
 
 exports.run_findByUserID = function(req,res,next) {
-    Run.find({ user : user })
+    Run.find({ user : req.user })
     .exec(function(err, runs){
         if(err){
             
             return res.status(500).send({
-                message: "Error retrieving runs with given User ID" + req.params.userID
+                message: "Error retrieving runs with given User ID" + req.user
             })
         }
         res.send(runs);
@@ -33,7 +35,7 @@ exports.run_findByUserID = function(req,res,next) {
 
 exports.run_findByRouteID = function(req,res,next) {
     Run.find({ 
-        user : user,
+        user : req.user,
         route : route 
     })
     .exec(function(err, runs){
@@ -50,9 +52,7 @@ exports.run_findByRouteID = function(req,res,next) {
 exports.run_update = function (req, res, next) {
     Run.findByIdAndUpdate(req.params.id, {$set: req.body}, 
     function (err, run) {
-        if (err) {
-            return res.status(500).json(err.message);
-        }
+        if (err) return res.status(500).json(err.message);
         res.send(run);
     });
 };
