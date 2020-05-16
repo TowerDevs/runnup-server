@@ -8,6 +8,6 @@ module.exports = model("runs", new Schema({
     totalTime: { type: Number, default: 0 },
     distanceRan: { type: Number, default: 0 }
 }, {
-    timestamps: false,
+    timestamps: true,
     versionKey: false
 }));

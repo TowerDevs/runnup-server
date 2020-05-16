@@ -8,6 +8,6 @@ module.exports = model("routes", new Schema({
     pace: { type: Number, default: 0 },
     calories: { type: Number, default: 0 }
 }, {
-    timestamps: false,
+    timestamps: true,
     versionKey: false
 }));
