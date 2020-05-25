@@ -5,19 +5,19 @@ const User = require('../models/Users')
 const ObjectID = require('mongodb').ObjectID;
 
 exports.run_create = (req, res) => {
-    const { route, totalTime, distanceRan } = req.body
+    const { route, totalTime: duration, distanceRan: distance } = req.body
 
     const run = new Run ({
         user:  ObjectID(req.user),
         timestamp: new Date(),
         route: route,
-        totalTime: Number(totalTime),
-        distanceRan: distanceRan
+        duration: Number(duration),
+        distance: distance
     })
 
     console.log(req.body)
 
-    User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$inc: {'runStats.kilometersRan': req.body.distanceRan, 'runStats.minutesRan': req.body.totalTime, 'runStats.runsCompleted': 1}}, (err) => {
+    User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$inc: {'runStats.kilometersRan': req.body.distance, 'runStats.minutesRan': req.body.duration, 'runStats.runsCompleted': 1}}, (err) => {
         if (err) return res.status(500).json(err.message);        
         run.save(function (err) {
             if (err) return res.status(500).json(err.message);
@@ -52,7 +52,7 @@ exports.run_findByRouteID = function(req, res) {
         if(err){
             
             return res.status(500).send({
-                message: "Error retrieving runs with given Route ID" + req.params.routeID
+                message: "Error retrieving runs with given Route ID" + req.params.route
             })
         }
         console.log('Runs under route retrieved')
