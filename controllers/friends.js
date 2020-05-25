@@ -14,7 +14,7 @@ exports.friend_add = (req, res) => {
 
     console.log({email})
 
-    var bool;
+    var isInFriendsBool, isInBlockedBool, isInFriendRequestsBool;
 
     User.findOne({ email }, (err, user) => {
 
@@ -30,68 +30,68 @@ exports.friend_add = (req, res) => {
              User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
                 if (err) return res.status(500).json(err.message);        
                 
-                var isInFriends = function() {
-                    bool = false;
+                var isInFriends = () => {
+                    isInFriendsBool = false;
                     for (i = 0; i < user.friends.length; i++) {
                         console.log("Checking " + user.friends[i].email + " and " + emailToCheck)
 
                         if (user.friends[i].email.trim() == emailToCheck.trim()){
-                            bool = true;
+                            isInFriendsBool = true;
                             console.log("match found")
                             break
                         } 
-                        return bool
+                        return isInFriendsBool
                     }
-                    console.log("isInFriends: " + bool)
+                    console.log("isInFriends: " + isInFriendsBool)
 
-                    return bool
+                    return isInFriendsBool
                 }
 
-                bool = isInFriends();
+                isInFriendsBool = isInFriends();
 
-                var isInBlocked = function() {
-                    bool2 = false;
+                var isInBlocked = () => {
+                    isInBlockedBool = false;
                     console.log(user.blockedUsers)
                     for (i = 0; i < user.blockedUsers.length; i++) {
                         console.log("Checking " + user.blockedUsers[i] + " and " + user2)
 
                         if (user.blockedUsers[i].toString().trim() == user2.toString().trim()){
-                            bool2 = true;
+                            isInBlockedBool = true;
                             console.log("match found")
                             break
                         } 
                     }
-                    console.log("isInBlocked: " + bool2)
+                    console.log("isInBlocked: " + isInBlockedBool)
 
-                    return bool2
+                    return isInBlockedBool
                 }
 
-                bool2 = isInBlocked();
+                isInBlockedBool = isInBlocked();
 
-                var isInFriendRequests = function() {
-                    bool3 = false;
+                var isInFriendRequests = () => {
+                    isInFriendRequestsBool = false;
                     console.log(user.friendRequests)
                     for (i = 0; i < user.friendRequests.length; i++) {
                         console.log("Checking " + user.friendRequests[i] + " and " + user2)
 
                         if (user.friendRequests[i].toString().trim() == user2.toString().trim()){
-                            bool3 = true;
+                            isInFriendRequestsBool = true;
                             console.log("match found")
                             break
                         } 
                     }
-                    console.log("isInFriendRequests: " + bool3)
+                    console.log("isInFriendRequests: " + isInFriendRequestsBool)
 
-                    return bool3
+                    return isInFriendRequestsBool
                 }
 
-                bool3 = isInFriendRequests();
+                isInFriendRequestsBool = isInFriendRequests();
 
-                if (bool) {
+                if (isInFriendsBool) {
                     return res.status(403).json('Friend is already added, pending or blocked.');
-                } else if (bool2) {
+                } else if (isInBlockedBool) {
                     return res.status(403).json('User is in blocked list.');
-                } else if (bool3) {
+                } else if (isInFriendRequestsBool) {
                     return res.status(403).json('User has already sent you a friends request.');
                 }
                 else {
@@ -114,7 +114,7 @@ exports.friend_add = (req, res) => {
                     });
                 }
 
-                return bool
+                return isInFriendsBool
      
             });
         }
