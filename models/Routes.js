@@ -7,13 +7,13 @@ module.exports = model("routes", new Schema({
     duration: { type: Number, default: 0 },
     pace: { type: Number, default: 0 },
     calories: { type: Number, default: 0 },
-    geometry: [{
+    geometry: {
         type: { type: String, default: "LineString"},
-        coordinates: {
+        coordinates: [{
             longitude : { type: Number, default: 0},
             latitude : { type: Number, default: 0}
-        }
-    }],
+        }]
+    },
 }, {
     timestamps: false,
     versionKey: false

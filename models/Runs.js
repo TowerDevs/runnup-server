@@ -7,13 +7,13 @@ module.exports = model("runs", new Schema({
     avgPace: { type: Number, default: 0 },
     totalTime: { type: Number, default: 0 },
     distanceRan: { type: Number, default: 0 },
-    geometry: [{
+    geometry: {
         type: { type: String, default: "LineString"},
-        coordinates: {
+        coordinates: [{
             longitude : { type: Number, default: 0},
             latitude : { type: Number, default: 0}
-        }
-    }],
+        }]
+    },
 }, {
     timestamps: false,
     versionKey: false
