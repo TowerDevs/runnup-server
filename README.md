@@ -23,7 +23,7 @@
 ## Contributing
 
 ## Versioning
-We use [Semver](https://semver.org) for versioning. For the versions available, see [tags on this repository](https://github.com/Tower-Dev/runnup-server/releases)
+We use [SemVer](https://semver.org) for versioning. For the versions available, see [tags on this repository](https://github.com/Tower-Dev/runnup-server/releases)
 
 ## Authors
 * Richard Antao

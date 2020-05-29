@@ -1,34 +1,46 @@
 const User = require('../models/Users')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const secretKey = process.env.AUTH_SECRET;
 
-exports.user_create = (req, res, next) => {
-    const { name, email, password, region } = req.body
+const Routes = require('../models/Routes')
+const Runs = require('../models/Runs')
+
+const ObjectID = require('mongodb').ObjectID;
+
+
+exports.user_create = (req, res) => {
+    const { first, last, email, password, region } = req.body
 
     User.findOne({ email }, (err, user) => {
         if (err) console.log(err)
 
         else if (user) res.status(403).json("User already exists")
 
-        const user = new User({
-                name: name,
+        else {
+            const user = new User({
+                name: {
+                    first,
+                    last
+                },
                 email: email,
                 password: bcrypt.hashSync(password, 10),
                 region: region
-        });
+            });
 
-        user.save((err, registeredUser) => {
-            if (err) return next(err);
+            user.save((err, registeredUser) => {
+                if (err) return res.status(500).json(err.message);        
 
-            const payload = { subject: registeredUser._id}
-            const token = jwt.sign(payload, 'secretKey')
+                const payload = { subject: registeredUser._id}
+                const token = jwt.sign(payload, secretKey)
 
-            return res.status(201).json(token)
-        })
+                return res.status(201).json(token)
+            })
+        }
     })
 }
 
-exports.user_login = (req, res, next) => {
+exports.user_login = (req, res) => {
     const { email, password } = req.body
 
     User.findOne({ email }, (err, user) => {
@@ -41,7 +53,7 @@ exports.user_login = (req, res, next) => {
 
             if (result) {
                 const payload = {subject: user._id}
-                const token = jwt.sign(payload, 'secretKey')
+                const token = jwt.sign(payload, secretKey)
 
                 return res.status(201).json(token);
             }
@@ -51,22 +63,34 @@ exports.user_login = (req, res, next) => {
     })
 }
 
-exports.user_details = (req, res, next) => {
-    const { _id } = req.user;
+exports.user_details = (req, res) => {
 
-    User.findById(_id, (err, user) => {
-        if (err) return next(err);
+    User.findOne({_id: new ObjectID(req.user)}, (err, user) => {
+        if (err) return res.status(500).json(err.message);
 
         return res.json(user);
     })
 };
 
-exports.user_update = function (req, res, next) {
-    const { id } = req.user;
+exports.user_update = (req, res) => {
 
-    User.findByIdAndUpdate(id, {$set: req.body}, (err, user) => {
-        if (err) return next(err);
+    User.findOneAndUpdate({_id: new ObjectID(req.user)}, {$set: req.body}, (err, user) => {
+        if (err) return res.status(500).json(err.message);
 
-        return res.status(200).json('User updated.');
+        console.log(req.body)
+
+        return res.status(200).json(user);
+    });
+};
+
+exports.user_delete = (req, res) => {
+
+    User.deleteOne({_id: new ObjectID(req.user)}, (err, user) => {
+        if (err) return res.status(500).json(err.message);
+
+        Routes.deleteMany({user: new ObjectID(req.user) }).exec()
+        Runs.deleteMany({user: new ObjectID(req.user) }).exec()
+
+        return res.status(200).json(user);
     });
 };

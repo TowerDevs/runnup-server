@@ -1,13 +1,13 @@
 const { model, Schema } = require("mongoose");
 
 module.exports = model("runs", new Schema({
-    runID: { type: String, required: true },
-    userID: { type: String, required: true },
-    day: { type: Date, required: true },
-    routeID: {type: String, required: true},
-    avgPace: { type: Number, required: true },
-    totalTime: { type: Number, required: true }
+    user: { type: Schema.Types.ObjectId, required: true, ref: "users" },
+    timestamp: { type: Date, required: true },
+    route: { type: Schema.Types.ObjectId, required: false, ref: "routes" },
+    avgPace: { type: Number, default: 0 },
+    totalTime: { type: Number, default: 0 },
+    distanceRan: { type: Number, default: 0 }
 }, {
-    timestamps: true,
-    versionKey: true
+    timestamps: false,
+    versionKey: false
 }));

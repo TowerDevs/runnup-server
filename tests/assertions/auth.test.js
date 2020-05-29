@@ -1,4 +1,4 @@
-process.env.NODE_ENV = "testing";
+process.env.NODE_ENV = "3002";
 
 const chai = require("chai");
 const server = require("../../server");
@@ -9,30 +9,133 @@ const { register, login } = require("../data/auth.json");
 
 chai.use(chaiHttp);
 
+let auth = '';
+
+// Create New User
 describe("POST /api/v1/users", () => {
-    it("It should return a 201 status with the new user object", done => {
+    it("It should return a 201 status with the new user's token", done => {
+        let user = {
+            name: "Gerald Smith",
+            password: "password",
+            email: "m2@michaeldsilva.com"
+        }
         chai.request(server)
-        .post("/api/users")
-        .send(register.good)
+        .post("/api/v1/users")
+        .send(user)
         .end((err, res) => {
             if(err) throw err;
 
             res.should.have.property("status", 201);
 
-            res.body.should.be.a("object");
-
-            res.body.should.have.property("name");
-            res.body.should.have.property("email");
-            res.body.should.have.property("password");
-
-            res.body.name.should.be.a("object");
-            res.body.email.should.be.a("string");
-            res.body.password.should.be.a("string");
-
-            res.body.name.first.should.be.a("string");
-            res.body.name.last.should.be.a("string");
+            res.body.should.be.a("string");
 
             done();
+
+            return auth = res.body;
+        });
+    });
+});
+
+// Try creating user with email just used
+describe("POST /api/v1/users", () => {
+    it("It should return a 403 status with string saying the user alredy exists", done => {
+        let user = {
+            name: "Gerald Smith",
+            password: "password",
+            email: "m2@michaeldsilva.com"
+        }
+        chai.request(server)
+        .post("/api/v1/users")
+        .send(user)
+        .end((err, res) => {
+            if(err) throw err;
+
+            res.should.have.property("status", 403);
+
+            res.body.should.be.a("string");
+
+            res.body.should.equal("User already exists");
+
+            console.log(res.body);
+
+            done();
+        });
+    });
+});
+
+// Login user
+describe("POST /api/v1/users/access-token", () => {
+    it("It should return a 201 status with the user's token", done => {
+        let userData = {
+            email: "m2@michaeldsilva.com",
+            password: "password",
+        }
+        chai.request(server)
+        .post("/api/v1/users/access-token")
+        .send(userData)
+        .end((err, res) => {
+            if(err) throw err;
+
+            res.should.have.property("status", 201);
+
+            res.body.should.be.a("string");
+
+            done();
+
+            return auth = res.body;
+        });
+    });
+});
+
+// Update new user
+describe("UPDATE /api/v1/users", () => {
+    it("It should return a 200 status with a string saying the user has been updates", done => {
+        console.log("Auth:" + auth)
+        let userData = {
+            name: "Greg Smith",
+            Country: "France"
+        }
+        chai.request(server)
+        .put("/api/v1/users")
+        .set('Authorization', auth)
+        .send(userData)
+        .end((err, res) => {
+            if(err) throw err;
+
+            res.should.have.property("status", 200);
+
+            //res.body.should.be.a("string");
+
+            //res.body.should.equal("User updated.");
+
+            console.log(res.body);
+
+            done();
+
+        });
+    });
+});
+
+// Delete new user
+describe("DELETE /api/v1/users", () => {
+    it("It should return a 200 status with a string saying the user has been deleted", done => {
+        console.log("Auth:" + auth)
+        chai.request(server)
+        .delete("/api/v1/users")
+        .set('Authorization', auth)
+        .end((err, res) => {
+            if(err) throw err;
+
+            res.should.have.property("status", 200);
+
+            //res.body.should.be.a("string");
+
+            //res.body.should.equal("User deleted.");
+
+            console.log(res.body);
+
+            done();
+
         });
     });
 });
