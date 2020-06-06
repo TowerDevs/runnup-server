@@ -1,8 +1,10 @@
 # Runnup Server
 
 ## Getting Started
-
+`npm run dev` will run the server
+ 
 ### Prerequisites
+if using redis, must start an instance of redis-server on your local device 
 
 ### Installing
 `npm install` installs all packages inside `package.json`

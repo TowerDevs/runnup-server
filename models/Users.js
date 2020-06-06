@@ -2,6 +2,31 @@ const { model, Schema } = require("mongoose");
 
 const friendSchema = require('../models/Friends').schema;
 
+/**
+ * 
+ *  components:
+ *    schemas:
+ *      User:
+ *        type: object
+ *        required:
+ *          - name
+ *          - email
+ *          - password
+ *          - country
+ *          - state
+ *          - 
+ *        properties:
+ *          name:
+ *            type: string
+ *          email:
+ *            type: string
+ *            format: email
+ *            description: Email for the user, needs to be unique.
+ *        example:
+ *           name: Alexander
+ *           email: fake@email.com
+ */
+
 module.exports = model("users", new Schema({
     name: {
         first: {type: String, required: true},
