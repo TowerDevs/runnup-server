@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const friendSchema = require('../models/Friends').schema;
+const friendSchema = require('./Friends').schema;
 
 module.exports = model("users", new Schema({
     name: {
