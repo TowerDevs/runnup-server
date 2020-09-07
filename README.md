@@ -1,5 +1,15 @@
 # Runnup Server
 
+## About
+This server was designed to be used a run planner/tracker application, but it does have some functionalities that could be used in any application:
+- Users
+  - Account Creation
+  - Update user details
+  - Delete account
+- Friends
+  - Allow users to send and respond to friend requests
+  - Allow users to manage (remove or block) their friends
+
 ## Getting Started
 
 ### Prerequisites
