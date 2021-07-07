@@ -21,11 +21,11 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 /* --- Routes --- */
-app.use("/api/v1", require("./routes/auth"));
-app.use("/api/v1", require("./routes/errors"));
-app.use("/api/v1", require("./routes/routes"));
-app.use("/api/v1", require("./routes/runs"));
-app.use("/api/v1", require("./routes/friends"));
+app.use("/api/v1", require("./api/routes/auth"));
+app.use("/api/v1", require("./api/routes/errors"));
+app.use("/api/v1", require("./api/routes/routes"));
+app.use("/api/v1", require("./api/routes/runs"));
+app.use("/api/v1", require("./api/routes/friends"));
 
 /* --- Bootup --- */
 app.listen(port, () => console.log(`Server running on port ${port}`));
